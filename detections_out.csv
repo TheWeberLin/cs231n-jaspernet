@@ -1,0 +1,4 @@
+MetaId,Name,CameraPath,category,conf,img_w,img_h,bbox_x,bbox_y,bbox_w,bbox_h,multiple
+525025,p_030901.jpg20200410.jpg,CAMERA_ARRAY_E/camera_E7-0,animal,0.966,1280,720,0.0,0.1125,0.2546,0.5124,False
+583117,p_026288.jpg20220702.jpg,CAMERA_ARRAY_G/camera_G1,animal,0.968,1280,960,0.0007,0.001,0.7492,0.9062,False
+686218,p_041400.jpg20251013.jpg,CAMERA_ARRAY_G/camera_G1,animal,0.884,1280,960,0.3562,0.2354,0.3257,0.2156,False
