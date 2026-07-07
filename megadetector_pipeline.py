@@ -66,15 +66,15 @@ def run_detections_from_csv(
                         "MetaId": meta_id,
                         "Name": name,
                         "CameraPath": camera_path,
-                        "category": CATEGORIES.get(d["category"], d["category"]),
-                        "conf": round(d["conf"], 4),
+                        "rough_category": CATEGORIES.get(d["category"], d["category"]),
+                        "detection_conf": round(d["conf"], 4),
                         "img_w": image.size[0],
                         "img_h": image.size[1],
                         "bbox_x": d["bbox"][0],
                         "bbox_y": d["bbox"][1],
                         "bbox_w": d["bbox"][2],
                         "bbox_h": d["bbox"][3],
-                        "multiple": d_cnt,
+                        "n_detections": d_cnt,
                     }
                     for d in detections
                 ]
@@ -85,15 +85,15 @@ def run_detections_from_csv(
                         "MetaId": meta_id,
                         "Name": name,
                         "CameraPath": camera_path,
-                        "category": None,
-                        "conf": None,
+                        "rough_category": None,
+                        "detection_conf": None,
                         "img_w": image.size[0],
                         "img_h": image.size[1],
                         "bbox_x": None,
                         "bbox_y": None,
                         "bbox_w": None,
                         "bbox_h": None,
-                        "multiple": 0,
+                        "n_detections": 0,
                     }
                 ]
 

@@ -39,15 +39,15 @@ import timm
 
 from crop import build_photo_path, crop_detection_row, PHOTO_ROOT, DEFAULT_CONTEXT
 
+labels = pd.read_csv('species_to_idx.csv', index_col=0)
+CLASS_NAMES = list(labels.columns)
+
 # ----------------------------------------------------------------------------
 # Config — keep in sync with training (DINO_layerwise).
 # ----------------------------------------------------------------------------
 MODEL_NAME = "vit_base_patch14_dinov2.lvd142m"
 NUM_CLASSES = 35
 IMG_SIZE = 224
-
-# Optional id -> species-name map. Leave None to just emit numeric class ids.
-CLASS_NAMES = None  # e.g. {0: "deer", 1: "coyote", ..., 21: "none"}
 
 
 # ----------------------------------------------------------------------------
@@ -94,7 +94,7 @@ def build_transform(model):
 
 
 def _label_for(class_id):
-    if CLASS_NAMES and class_id in CLASS_NAMES:
+    if CLASS_NAMES and 0 <= class_id < len(CLASS_NAMES):
         return CLASS_NAMES[class_id]
     return class_id
 
@@ -108,12 +108,12 @@ def classify_detections_csv(
     checkpoint_path=None,
     device=None,
     context=DEFAULT_CONTEXT,
-    multiple_col="multiple",
+    multiple_col="n_detections",
     batch_size=64,
     top_k=5,
     add_confidence=True,
     add_topk=False,
-    species_col="species",
+    species_col="pred_species",
 ) -> pd.DataFrame:
     """
     Crop each detection out of its source photo in memory and classify it,
@@ -225,11 +225,11 @@ def _build_arg_parser():
     p.add_argument("--checkpoint", required=True, help="Path to trained .pth checkpoint")
     p.add_argument("--photo-root", default=PHOTO_ROOT, help="Root CameraPath is relative to")
     p.add_argument("--context", type=float, default=DEFAULT_CONTEXT, help="Bbox padding fraction")
-    p.add_argument("--species-col", default="species")
+    p.add_argument("--species-col", default="predicted_species")
     p.add_argument("--batch-size", type=int, default=64)
     p.add_argument("--top-k", type=int, default=5)
     p.add_argument("--device", default="auto", help="auto | cuda | mps | cpu")
-    p.add_argument("--multiple-col", default="multiple", help="Column with total detection count")
+    p.add_argument("--multiple-col", default="n_detections", help="Column with total detection count")
     p.add_argument("--add-topk", action="store_true")
     return p
 
